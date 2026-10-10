@@ -1,11 +1,4 @@
 # Python
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-
-# 内置运行时(免安装 Python + 依赖, 约 400MB, 不入库)
-python/
 
 # 运行时产生的取词结果(不入库)
 取词结果.txt
