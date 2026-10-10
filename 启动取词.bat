@@ -3,9 +3,10 @@ chcp 65001 >nul
 cd /d "%~dp0"
 title 视频字幕取词工具
 
-rem ---- 选择 Python 解释器(优先 py 启动器, 否则用 PATH 里的 python) ----
-set "PY=py"
-where py >nul 2>nul || set "PY=python"
+rem ---- 选择 Python 解释器(优先本目录内置 python\, 其次 py 启动器, 最后 PATH 里的 python) ----
+set "PY=%~dp0python\python.exe"
+if not exist "%PY%" set "PY=py"
+if "%PY%"=="py" (where py >nul 2>nul || set "PY=python")
 
 rem ---- 确认 Python 可用 ----
 %PY% --version >nul 2>nul
@@ -37,10 +38,11 @@ if errorlevel 1 (
 
 rem ---- 选择无控制台的解释器, 启动后不残留黑窗口 ----
 set "PYW="
-where pythonw >nul 2>nul && set "PYW=pythonw"
+if exist "%~dp0python\pythonw.exe" set "PYW=%~dp0python\pythonw.exe"
+if not defined PYW (where pythonw >nul 2>nul && set "PYW=pythonw")
 if not defined PYW (where pyw >nul 2>nul && set "PYW=pyw")
 if not defined PYW set "PYW=%PY%"
 
 echo 正在启动取词工具...
-start "" %PYW% "video_word_grabber.py"
+start "" "%PYW%" "video_word_grabber.py"
 exit /b 0
